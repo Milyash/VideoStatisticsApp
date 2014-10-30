@@ -2,10 +2,10 @@
 <html>
 <head>
 	<title>Video.js test </title>
-	<script src="jquery-1.11.0.min.js"></script>
+	<script src="../Libraries/jquery-1.11.0.min.js"></script>
 	<script src="video-js/video.js"></script>
 	<link href="video-js/video-js.css" rel="stylesheet">
-	<link href="style.css" rel="stylesheet">
+	<link href="../style.css" rel="stylesheet">
 </head>
 
 <body style="background-color: #46428A">
@@ -36,7 +36,7 @@ videojs("example_video_1").ready(function(){
 
 		  // EXAMPLE: Start playing the video.
 		  // myPlayer.play();
-		  var EVENT_NONE = 0; 
+		  var EVENT_NONE = 0;
 		  var EVENT_SEEKING = 1;
 		  var EVENT_SEEKING_PAUSE = 2;
 
@@ -45,12 +45,10 @@ videojs("example_video_1").ready(function(){
 		  var current_time = 0;
 		  var newTime = 0;
 		  var last_event = EVENT_NONE;
-		  
 
-		  function add_to_results(new_line){
+		  function add_to_results(new_line) {
 		  	result.append("<li>" + new_line + ", time = " + myPlayer.currentTime().toFixed(2) + "sec </li>");
 		  }
-
 
 		  myPlayer
 		  .on("seeking", function(){

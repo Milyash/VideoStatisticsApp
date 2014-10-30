@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Vimeo test</title>
+		<meta charset="UTF-8">
+		<link href="../style.css" rel="stylesheet">
+
+		<script src="../Libraries/jquery-1.11.0.min.js"></script>
+		<script src="http://a.vimeocdn.com/js/froogaloop2.min.js?97273-1352487961"></script>
+
+		<script type="text/javascript">
+			//<![CDATA[
+			var gs_d=new Date,DoW=gs_d.getDay();gs_d.setDate(gs_d.getDate()-(DoW+6)%7+3);
+			var ms=gs_d.valueOf();gs_d.setMonth(0);gs_d.setDate(4);
+			var gs_r=(Math.round((ms-gs_d.valueOf())/6048E5)+1)*gs_d.getFullYear();
+			var gs_p = (("https:" == document.location.protocol) ? "https://" : "http://");
+			document.write(unescape("%3Cscript src='" + gs_p + "s.gstat.orange.fr/lib/gs.js?"+gs_r+"' type='text/javascript'%3E%3C/script%3E"));
+			//]]>
+		</script>
+
+	</head>
+
+	<body style="background-color: #46428A">
+
+		<div style="margin: 50px auto; width:640px">
+			<iframe id="player" src="//player.vimeo.com/video/24285155?api=1&player_id=player&byline=0&portrait=0&color=d4400e" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+		</div>
+
+		<div id="result_container">Result:
+			<button id="clear"> Clear! </button>
+			<ul id="result">
+			</ul>
+		</div>
+
+		<script type="text/javascript">
+			//<![CDATA[
+			if (typeof _gstat != "undefined") _gstat.audience('','confirme-voila.net');
+			//]]>
+
+			$("#clear").click(function(){
+				$("#result").empty();
+			})
+
+			var iframe = $('#player')[0];
+ 			var player = $f(iframe);
+
+ 			player.addEvent('ready', function() {
+
+ 				var EVENT_NONE = 0;
+			  	var EVENT_SEEKING = 1;
+			  	var EVENT_SEEKING_PAUSE = 2;
+
+			  	var result = $("#result");
+
+			  	var current_time = 0;
+			  	var newTime = 0;
+			  	var last_event = EVENT_NONE;
+
+ 				player.addEvent('play', onPlay);
+ 				player.addEvent('pause', onPause);
+ 				player.addEvent('seek', onSeek);
+ 				player.addEvent('playProgress', onPlayProgress);
+
+ 				function onPlay(id) {
+				
+					if (last_event == EVENT_SEEKING_PAUSE) last_event = EVENT_NONE;
+			  		else add_to_results("play!" );
+				};
+
+				function onPause(id) {
+
+					if (last_event == EVENT_SEEKING) last_event = EVENT_SEEKING_PAUSE;
+			  		else add_to_results("pause!" );
+				};
+
+				function onSeek(data) {
+
+					add_to_results("seeking! from " + current_time + " to ");
+
+					newTime = myPlayer.currentTime().toFixed(2);
+				  	add_to_results("seeking! from " + current_time + " to ");
+				  	current_time = newTime;	
+				  	last_event = EVENT_SEEKING;
+				};
+
+				function add_to_results(new_line) {
+
+					player.api("getCurrentTime", function(value, player_id) {
+
+						result.append("<li>" + new_line + ", time = " + value.toFixed(2) + "sec </li>");
+					});
+				  }
+			});
+
+			
+		</script>
+	</body>
+</html>
