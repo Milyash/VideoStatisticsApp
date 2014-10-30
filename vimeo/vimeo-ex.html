@@ -3,7 +3,7 @@
 	<head>
 		<title>Vimeo test</title>
 		<meta charset="UTF-8">
-		<link href="../style.css" rel="stylesheet">
+		<link href="../style_player.css" rel="stylesheet">
 
 		<script src="../Libraries/jquery-1.11.0.min.js"></script>
 		<script src="http://a.vimeocdn.com/js/froogaloop2.min.js?97273-1352487961"></script>
@@ -39,48 +39,54 @@
 
 			$("#clear").click(function(){
 				$("#result").empty();
-			})
+			});
 
 			var iframe = $('#player')[0];
  			var player = $f(iframe);
 
  			player.addEvent('ready', function() {
 
- 				var EVENT_NONE = 0;
-			  	var EVENT_SEEKING = 1;
-			  	var EVENT_SEEKING_PAUSE = 2;
-
 			  	var result = $("#result");
 
-			  	var current_time = 0;
-			  	var newTime = 0;
-			  	var last_event = EVENT_NONE;
+			  	var current_volume;
+
+			  	player.api("getVolume", function(volume) {
+
+			  		current_volume = volume;
+			  	});
 
  				player.addEvent('play', onPlay);
  				player.addEvent('pause', onPause);
  				player.addEvent('seek', onSeek);
  				player.addEvent('playProgress', onPlayProgress);
 
+ 				function onPlayProgress() {
+
+ 					var new_volume;
+ 					player.api("getVolume", function(volume) {
+
+			  		new_volume = volume;
+			  		if (current_volume != new_volume) {
+
+ 						result.append("<li>" +  "muted! from " + current_volume + "to " + new_volume + "</li>");
+ 						current_volume = new_volume;
+ 					}
+			  	});
+ 				}
+
  				function onPlay(id) {
 				
-					if (last_event == EVENT_SEEKING_PAUSE) last_event = EVENT_NONE;
-			  		else add_to_results("play!" );
+					add_to_results("play!" );
 				};
 
 				function onPause(id) {
 
-					if (last_event == EVENT_SEEKING) last_event = EVENT_SEEKING_PAUSE;
-			  		else add_to_results("pause!" );
+					add_to_results("pause!" );
 				};
 
 				function onSeek(data) {
 
-					add_to_results("seeking! from " + current_time + " to ");
-
-					newTime = myPlayer.currentTime().toFixed(2);
-				  	add_to_results("seeking! from " + current_time + " to ");
-				  	current_time = newTime;	
-				  	last_event = EVENT_SEEKING;
+					add_to_results("seeking! to ");
 				};
 
 				function add_to_results(new_line) {
