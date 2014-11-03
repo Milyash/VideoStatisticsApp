@@ -7,17 +7,6 @@
 
 		<script src="../Libraries/jquery-1.11.0.min.js"></script>
 		<script src="http://a.vimeocdn.com/js/froogaloop2.min.js?97273-1352487961"></script>
-
-		<script type="text/javascript">
-			//<![CDATA[
-			var gs_d=new Date,DoW=gs_d.getDay();gs_d.setDate(gs_d.getDate()-(DoW+6)%7+3);
-			var ms=gs_d.valueOf();gs_d.setMonth(0);gs_d.setDate(4);
-			var gs_r=(Math.round((ms-gs_d.valueOf())/6048E5)+1)*gs_d.getFullYear();
-			var gs_p = (("https:" == document.location.protocol) ? "https://" : "http://");
-			document.write(unescape("%3Cscript src='" + gs_p + "s.gstat.orange.fr/lib/gs.js?"+gs_r+"' type='text/javascript'%3E%3C/script%3E"));
-			//]]>
-		</script>
-
 	</head>
 
 	<body style="background-color: #46428A">
@@ -33,9 +22,6 @@
 		</div>
 
 		<script type="text/javascript">
-			//<![CDATA[
-			if (typeof _gstat != "undefined") _gstat.audience('','confirme-voila.net');
-			//]]>
 
 			$("#clear").click(function(){
 				$("#result").empty();
@@ -68,6 +54,10 @@
 			  		new_volume = volume;
 			  		if (current_volume != new_volume) {
 
+			  			data = {};
+			  			data.old_volume = current_volume;
+			  			data.new_volume = new_volume;
+			  			postData("volume", data);
  						result.append("<li>" +  "muted! from " + current_volume + "to " + new_volume + "</li>");
  						current_volume = new_volume;
  					}
@@ -76,26 +66,51 @@
 
  				function onPlay(id) {
 				
-					add_to_results("play!" );
+					player.api("getCurrentTime", function(value, player_id) {
+
+						postData("play", value);
+						result.append("<li> play!, time = " + value.toFixed(2) + "sec </li>");
+					});
 				};
 
 				function onPause(id) {
 
-					add_to_results("pause!" );
+					player.api("getCurrentTime", function(value, player_id) {
+
+						postData("pause", value);
+						result.append("<li> pause!, time = " + value.toFixed(2) + "sec </li>");
+					});
 				};
 
 				function onSeek(data) {
 
-					add_to_results("seeking! to ");
-				};
-
-				function add_to_results(new_line) {
-
 					player.api("getCurrentTime", function(value, player_id) {
 
-						result.append("<li>" + new_line + ", time = " + value.toFixed(2) + "sec </li>");
+						postData("seek", value);
+						result.append("<li> seeking! to, time = " + value.toFixed(2) + "sec </li>");
 					});
-				  }
+				};
+
+				// function add_to_results(new_line) {
+
+				// 	player.api("getCurrentTime", function(value, player_id) {
+
+				// 		result.append("<li>" + new_line + ", time = " + value.toFixed(2) + "sec </li>");
+				// 	});
+				//   }
+
+			  	function postData(event, time) {
+
+			  		var dataToSend = {};
+			  		dataToSend.event = event;
+			  		dataToSend.time = time;
+
+			  // 		$.post( "ajax/test.html", dataToSend, function( data ) {
+					// 	$( ".result" ).html();
+					// });
+
+					console.log(dataToSend);
+			  	}
 			});
 
 			
