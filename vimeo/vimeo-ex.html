@@ -35,6 +35,7 @@
 			  	var result = $("#result");
 
 			  	var current_volume;
+				var current_time;
 
 			  	player.api("getVolume", function(volume) {
 
@@ -61,6 +62,11 @@
  						result.append("<li>" +  "muted! from " + current_volume + "to " + new_volume + "</li>");
  						current_volume = new_volume;
  					}
+					
+					player.api("getCurrentTime", function(value, player_id) {
+
+						current_time = value.toFixed(2);
+					});
 			  	});
  				}
 
@@ -86,24 +92,22 @@
 
 					player.api("getCurrentTime", function(value, player_id) {
 
-						postData("seek", value);
-						result.append("<li> seeking! to, time = " + value.toFixed(2) + "sec </li>");
+						result.append("<li> seeking! from" + current_time + " to " + value.toFixed(2) + "sec </li>");
+						
+						data = {};
+			  			data.from = current_time;
+			  			data.to = value.toFixed(2);
+			  			postData("seek", data);
+						
 					});
 				};
 
-				// function add_to_results(new_line) {
-
-				// 	player.api("getCurrentTime", function(value, player_id) {
-
-				// 		result.append("<li>" + new_line + ", time = " + value.toFixed(2) + "sec </li>");
-				// 	});
-				//   }
-
-			  	function postData(event, time) {
+			  	function postData(event, data) {
 
 			  		var dataToSend = {};
 			  		dataToSend.event = event;
-			  		dataToSend.time = time;
+			  		dataToSend.data = data;
+					
 
 			  // 		$.post( "ajax/test.html", dataToSend, function( data ) {
 					// 	$( ".result" ).html();
