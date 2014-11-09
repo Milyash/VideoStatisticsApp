@@ -19,10 +19,11 @@
         <source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4'/>
     </video>
     <br>
-    <video id="video_player" class="video-js vjs-default-skin"
+    <video id="example_video_3" class="video-js vjs-default-skin"
            controls preload="auto" width="640" height="264"
            data-setup='{ "techOrder": ["youtube"], "src": "https://www.youtube.com/watch?v=uU6U-8LP1DY" }'>
     </video>
+
 </div>
 
 
@@ -35,105 +36,108 @@
 <script type="text/javascript">
     $("#clear").click(function () {
         $("#result").empty();
-    })
-
-    videojs("example_video_1").ready(function () {
-        var myPlayer = this;
-
-        // EXAMPLE: Start playing the video.
-        // myPlayer.play();
-        var EVENT_NONE = 0;
-        var EVENT_SEEKING = 1;
-        var EVENT_SEEKING_PAUSE = 2;
-
-        var result = $("#result");
-        var volume = myPlayer.volume().toFixed(2);
-        var current_time = 0;
-        var newTime = 0;
-        var last_event = EVENT_NONE;
-        var request_params = {};
-        var SERVER_URL = "http://localhost";
-
-        function add_to_results(new_line) {
-            result.append("<li>" + new_line + ", time = " + myPlayer.currentTime().toFixed(2) + "sec </li>");
-        }
-
-        function send_event() {
-            $.post(SERVER_URL,
-                    request_params);
-
-            console.log(request_params);
-
-        }
-
-        myPlayer
-                .on("seeking", function () {
-                    newTime = myPlayer.currentTime().toFixed(2);
-
-                    request_params = {
-                        event: "seeking",
-                        time_from: current_time,
-                        time_to: myPlayer.currentTime().toFixed(2)
-                    };
-                    send_event();
-
-                    current_time = newTime;
-                    last_event = EVENT_SEEKING;
-                })
-                .on("play", function () {
-                    if (last_event == EVENT_SEEKING_PAUSE) last_event = EVENT_NONE;
-                    else {
-
-                        request_params = {
-                            event: "play",
-                            time: myPlayer.currentTime().toFixed(2)
-                        };
-                        send_event();
-                    }
-                })
-                .on("pause", function () {
-                    if (last_event == EVENT_SEEKING) last_event = EVENT_SEEKING_PAUSE;
-                    else {
-
-                        request_params = {
-                            event: "pause",
-                            time: myPlayer.currentTime().toFixed(2)
-                        };
-                        send_event();
-                    }
-                })
-                .on("volumechange", function () {
-                    if (myPlayer.muted()) {
-                        request_params = {
-                            event: "muted",
-                            from_volume: volume,
-                            time: myPlayer.currentTime().toFixed(2)
-                        };
-                        volume = 0;
-                    } else {
-                        request_params = {
-                            event: "volumechange",
-                            from_volume: volume,
-                            to_volume: myPlayer.volume().toFixed(2),
-                            time: myPlayer.currentTime().toFixed(2)
-                        };
-                        volume = myPlayer.volume().toFixed(2);
-                    }
-                    send_event();
-                })
-                .on("fullscreenchange", function () {
-                    request_params = {
-                        event: "fullscreenchange",
-                        is_fillscreen: myPlayer.isfullScreen()
-                    };
-                    send_event();
-                })
-                .on("timeupdate", function () {
-                    current_time = myPlayer.currentTime().toFixed(2);
-                })
-
-
     });
+    var videos = document.getElementsByTagName("video");
+    for (i = 0; i <= videos.length; i++) {
+        videojs(videos[i].id).ready(function () {
+            var myPlayer = this;
+
+            // EXAMPLE: Start playing the video.
+            // myPlayer.play();
+            var EVENT_NONE = 0;
+            var EVENT_SEEKING = 1;
+            var EVENT_SEEKING_PAUSE = 2;
+
+            var result = $("#result");
+            var volume = myPlayer.volume().toFixed(2);
+            var current_time = 0;
+            var newTime = 0;
+            var last_event = EVENT_NONE;
+            var request_params = {};
+            var SERVER_URL = "http://localhost";
+
+            function add_to_results(new_line) {
+                result.append("<li>" + new_line + ", time = " + myPlayer.currentTime().toFixed(2) + "sec </li>");
+            }
+
+            function send_event() {
+                $.post(SERVER_URL,
+                        request_params);
+
+                console.log(request_params);
+
+            }
+
+            myPlayer
+                    .on("seeking", function () {
+                        newTime = myPlayer.currentTime().toFixed(2);
+
+                        request_params = {
+                            event: "seeking",
+                            time_from: current_time,
+                            time_to: myPlayer.currentTime().toFixed(2)
+                        };
+                        send_event();
+
+                        current_time = newTime;
+                        last_event = EVENT_SEEKING;
+                    })
+                    .on("play", function () {
+                        if (last_event == EVENT_SEEKING_PAUSE) last_event = EVENT_NONE;
+                        else {
+
+                            request_params = {
+                                event: "play",
+                                time: myPlayer.currentTime().toFixed(2)
+                            };
+                            send_event();
+                        }
+                    })
+                    .on("pause", function () {
+                        if (last_event == EVENT_SEEKING) last_event = EVENT_SEEKING_PAUSE;
+                        else {
+
+                            request_params = {
+                                event: "pause",
+                                time: myPlayer.currentTime().toFixed(2)
+                            };
+                            send_event();
+                        }
+                    })
+                    .on("volumechange", function () {
+                        if (myPlayer.muted()) {
+                            request_params = {
+                                event: "muted",
+                                from_volume: volume,
+                                time: myPlayer.currentTime().toFixed(2)
+                            };
+                            volume = 0;
+                        } else {
+                            request_params = {
+                                event: "volumechange",
+                                from_volume: volume,
+                                to_volume: myPlayer.volume().toFixed(2),
+                                time: myPlayer.currentTime().toFixed(2)
+                            };
+                            volume = myPlayer.volume().toFixed(2);
+                        }
+                        send_event();
+                    })
+                    .on("fullscreenchange", function () {
+                        request_params = {
+                            event: "fullscreenchange",
+                            is_fillscreen: myPlayer.isfullScreen()
+                        };
+                        send_event();
+                    })
+                    .on("timeupdate", function () {
+                        current_time = myPlayer.currentTime().toFixed(2);
+                    })
+
+
+        });
+    }
+
 
 </script>
 </body>
