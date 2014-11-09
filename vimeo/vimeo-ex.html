@@ -35,6 +35,7 @@
 			  	var result = $("#result");
 
 			  	var current_volume;
+			  	var current_time = 0;
 
 			  	player.api("getVolume", function(volume) {
 
@@ -51,65 +52,50 @@
  					var new_volume;
  					player.api("getVolume", function(volume) {
 
-			  		new_volume = volume;
-			  		if (current_volume != new_volume) {
+				  		new_volume = volume;
+				  		if (current_volume != new_volume) {
 
-			  			data = {};
-			  			data.old_volume = current_volume;
-			  			data.new_volume = new_volume;
-			  			postData("volume", data);
- 						result.append("<li>" +  "muted! from " + current_volume + "to " + new_volume + "</li>");
- 						current_volume = new_volume;
- 					}
-			  	});
+				  			data = {};
+				  			data.old_volume = current_volume;
+				  			data.new_volume = new_volume;
+				  			postData("volume", data);
+	 						result.append("<li>" +  "muted! from " + current_volume + "to " + new_volume + "</li>");
+	 						current_volume = new_volume;
+	 					}
+
+	 					player.api("getCurrentTime", function(value, player_id) {
+							current_time = value.toFixed(2);
+						});
+			  		});
  				}
 
  				function onPlay(id) {
 				
-					player.api("getCurrentTime", function(value, player_id) {
-
-						postData("play", value);
-						result.append("<li> play!, time = " + value.toFixed(2) + "sec </li>");
-					});
+					postData("play");
+					result.append("<li> play!, time = " + current_time + "sec </li>");
 				};
 
 				function onPause(id) {
 
-					player.api("getCurrentTime", function(value, player_id) {
-
-						postData("pause", value);
-						result.append("<li> pause!, time = " + value.toFixed(2) + "sec </li>");
-					});
+					postData("pause");
+					result.append("<li> pause!, time = " + current_time + "sec </li>");
 				};
 
 				function onSeek(data) {
 
-					player.api("getCurrentTime", function(value, player_id) {
-
-						postData("seek", value);
-						result.append("<li> seeking! to, time = " + value.toFixed(2) + "sec </li>");
-					});
+					console.log("coucou");
+					result.append("<li> seeking! from " + current_time + " to " + data.seconds.toFixed(2) + "sec </li>");
 				};
 
-				// function add_to_results(new_line) {
-
-				// 	player.api("getCurrentTime", function(value, player_id) {
-
-				// 		result.append("<li>" + new_line + ", time = " + value.toFixed(2) + "sec </li>");
-				// 	});
-				//   }
-
-			  	function postData(event, time) {
+			  	function postData(event) {
 
 			  		var dataToSend = {};
 			  		dataToSend.event = event;
-			  		dataToSend.time = time;
+			  		dataToSend.time = current_time;
 
-			  // 		$.post( "ajax/test.html", dataToSend, function( data ) {
-					// 	$( ".result" ).html();
-					// });
-
-					console.log(dataToSend);
+			  		$.post( "ajax/test.html", dataToSend, function( data ) {
+						
+					});
 			  	}
 			});
 
