@@ -4,6 +4,7 @@
     <title>Video.js test </title>
     <script src="../Libraries/jquery-1.11.0.min.js"></script>
     <script src="video-js/video.js"></script>
+    <script src="video-js/youtube.js"></script>
     <link href="video-js/video-js.css" rel="stylesheet">
     <link href="../style_player.css" rel="stylesheet">
 </head>
@@ -16,6 +17,11 @@
            poster="http://video-js.zencoder.com/oceans-clip.png"
            data-setup='{"example_option":true}'>
         <source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4'/>
+    </video>
+    <br>
+    <video id="video_player" class="video-js vjs-default-skin"
+           controls preload="auto" width="640" height="264"
+           data-setup='{ "techOrder": ["youtube"], "src": "https://www.youtube.com/watch?v=uU6U-8LP1DY" }'>
     </video>
 </div>
 
@@ -53,7 +59,7 @@
         }
 
         function send_event() {
-            $.post( SERVER_URL,
+            $.post(SERVER_URL,
                     request_params);
 
             console.log(request_params);
