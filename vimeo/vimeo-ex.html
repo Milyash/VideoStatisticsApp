@@ -56,9 +56,11 @@
 				  		if (current_volume != new_volume) {
 
 				  			data = {};
-				  			data.old_volume = current_volume;
-				  			data.new_volume = new_volume;
-				  			postData("volume", data);
+				  			data.event = "volumechange";
+				  			data.from_volume = current_volume;
+				  			data.to_volume = new_volume;
+				  			data.time = current_time;
+				  			postData(data);
 	 						result.append("<li>" +  "muted! from " + current_volume + "to " + new_volume + "</li>");
 	 						current_volume = new_volume;
 	 					}
@@ -71,29 +73,35 @@
 
  				function onPlay(id) {
 				
-					postData("play");
+					var dataToSend = {};
+			  		dataToSend.event = "play";
+			  		dataToSend.time = current_time;
+			  		postData(dataToSend);
 					result.append("<li> play!, time = " + current_time + "sec </li>");
 				};
 
 				function onPause(id) {
 
-					postData("pause");
+					var dataToSend = {};
+			  		dataToSend.event = "pause";
+			  		dataToSend.time = current_time;
+			  		postData(dataToSend);
 					result.append("<li> pause!, time = " + current_time + "sec </li>");
 				};
 
 				function onSeek(data) {
 
-					console.log("coucou");
+					var dataToSend = {};
+			  		dataToSend.event = "seek";
+			  		dataToSend.time_from = current_time;
+			  		dataToSend.time_to = data.seconds;
+					postData(dataToSend);
 					result.append("<li> seeking! from " + current_time + " to " + data.seconds.toFixed(2) + "sec </li>");
 				};
 
-			  	function postData(event) {
+			  	function postData(data) {
 
-			  		var dataToSend = {};
-			  		dataToSend.event = event;
-			  		dataToSend.time = current_time;
-
-			  		$.post( "ajax/test.html", dataToSend, function( data ) {
+			  		$.post( "ajax/test.html", data, function( data ) {
 						
 					});
 			  	}
