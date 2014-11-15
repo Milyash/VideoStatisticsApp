@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Milyash/VideoStatisticsApp/issues"
   },
-  "homepage": "https://github.com/Milyash/VideoStatisticsApp"
+  "homepage": "https://github.com/Milyash/VideoStatisticsApp",
+  "dependencies": {
+    "express": "^4.10.2"
+  }
 }
