@@ -1,8 +1,8 @@
 I Install npm
 
-
-1. Clone repo from github
+1. fetch feature/api-node branch from github
 2. Go into root folder
-3. Create a package.json file : "npm init"
-4. Install Express : "npm install express --save"
-5. Install a generator tool : "npm install express-generator -g"
+3. Create a package.json file : npm init
+4. Install the framework Express : npm install express --save
+5. Install the ORM Mongoose : npm install mongoose
+5. Install a generator tool : npm install express-generator -g
