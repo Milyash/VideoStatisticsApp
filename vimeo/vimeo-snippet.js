@@ -31,6 +31,8 @@ $.each(iframe, function(i, video) {
 				if (current_volume != new_volume) {
 
 					data = {};
+					data.page_url = $(location).attr('href');
+					data.video_url = $(iframe[i]).attr('src');
 					data.event = "volumechange";
 					data.from_volume = current_volume;
 					data.to_volume = new_volume;
@@ -48,6 +50,10 @@ $.each(iframe, function(i, video) {
 		function onPlay(id) {
 			
 			var dataToSend = {};
+			dataToSend.page_url = $(location).attr('href');
+			dataToSend.video_url = $(iframe[i]).attr('src');
+			console.log($(location).attr('href'));
+			console.log($(iframe[i]).attr('src'));
 			dataToSend.event = "play";
 			dataToSend.time = current_time;
 			dataToSend.video_id = id;
@@ -58,6 +64,8 @@ $.each(iframe, function(i, video) {
 		function onPause(id) {
 
 			var dataToSend = {};
+			dataToSend.page_url = $(location).attr('href');
+			dataToSend.video_url = $(iframe[i]).attr('src');
 			dataToSend.event = "pause";
 			dataToSend.time = current_time;
 			dataToSend.video_id = id;
@@ -68,6 +76,8 @@ $.each(iframe, function(i, video) {
 		function onSeek(data, id) {
 
 			var dataToSend = {};
+			dataToSend.page_url = $(location).attr('href');
+			dataToSend.video_url = $(iframe[i]).attr('src');
 			dataToSend.event = "seek";
 			dataToSend.time_from = current_time;
 			dataToSend.time_to = data.seconds;
@@ -81,7 +91,7 @@ $.each(iframe, function(i, video) {
 });
 
 function postData(data) {
-				console.log(data);
+
 				$.post( "ajax/test.html", data, function( data ) {
 
 				});
