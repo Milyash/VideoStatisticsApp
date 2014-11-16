@@ -6,3 +6,4 @@ I Install npm
 4. Install the framework Express : npm install express --save
 5. Install the ORM Mongoose : npm install mongoose
 5. Install a generator tool : npm install express-generator -g
+6. Install body-parser (used to parse post request) : npm install body-parser

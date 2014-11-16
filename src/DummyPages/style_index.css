@@ -1,6 +1,14 @@
-div {
+div:first-child {
 	position: absolute;
 	top: 10%;
+	left: 40%;
+	right: 40%;
+	text-align: center;
+}
+
+#api {
+	position: absolute;
+	top: 30%;
 	left: 40%;
 	right: 40%;
 	text-align: center;
