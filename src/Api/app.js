@@ -1,6 +1,7 @@
 var express = require('express')
 var mongoose   = require('mongoose');
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
 var app = express()
 
@@ -9,6 +10,17 @@ var app = express()
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+//Load local parameters
+  var data = fs.readFileSync('./config_local.json'),
+      parameters;
+  try {
+    parameters = JSON.parse(data);
+  }
+  catch (err) {
+    console.log('There has been an error parsing config file.')
+    console.log(err);
+  }
+
 //Enable CORS
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -16,9 +28,9 @@ app.use(function(req, res, next) {
   next();
 });
 
-var port = process.env.PORT || 8080;        // set our port
+var port = process.env.PORT || parameters.server_port;        // set our port
 
-mongoose.connect('mongodb://localhost:27017');
+mongoose.connect('mongodb://localhost:' + parameters.db_port);
 
 var Video     = require('./models/video');
 
@@ -38,11 +50,11 @@ router.route('/videos')
     // get all the videos (accessed at GET http://localhost:8080/api/videos)
     .get(function(req, res) {
 
-        Video.find(function(err, bears) {
+        Video.find(function(err, videos) {
             if (err)
                 res.send(err);
 
-            res.json(bears);
+            res.json(videos);
         });
     })
     // create a video (accessed at POST http://localhost:8080/api/videos)
