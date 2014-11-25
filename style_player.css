@@ -8,3 +8,9 @@ body{
 	margin: 30px auto;
 	background-color: white;	
 }
+#result{
+    font: normal 10px Verdana;
+}
+li{
+   margin-bottom: 10px;
+}
