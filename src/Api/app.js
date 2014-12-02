@@ -1,7 +1,7 @@
 var express = require('express')
-var mongoose   = require('mongoose');
-var bodyParser = require('body-parser');
-var fs = require('fs');
+var mongoose   = require('mongoose')
+var bodyParser = require('body-parser')
+var fs = require('fs')
 
 var app = express()
 
@@ -32,48 +32,12 @@ var port = process.env.PORT || parameters.server_port;        // set our port
 
 mongoose.connect('mongodb://localhost:' + parameters.db_port);
 
-var Video     = require('./models/video');
-
-// ROUTES FOR OUR API
-// =============================================================================
-var router = express.Router();              // get an instance of the express Router
-
-// middleware to use for all requests
-router.use(function(req, res, next) {
-    
-    next(); // make sure we go to the next routes and don't stop here
-});
-
-// on routes that end in /videos
-// ----------------------------------------------------
-router.route('/videos') 
-    // get all the videos (accessed at GET http://localhost:8080/api/videos)
-    .get(function(req, res) {
-
-        Video.find(function(err, videos) {
-            if (err)
-                res.send(err);
-
-            res.json(videos);
-        });
-    })
-    // create a video (accessed at POST http://localhost:8080/api/videos)
-    .post(function(req, res) {
-        
-        var video = new Video();      // create a new instance of the Video model
-        video.url = req.body.url;  // set the videos url
-
-        // save the bear and check for errors
-        video.save(function(err) {
-            if (err)
-                res.send(err);
-
-            res.json({ message: 'Video created!' });
-        });
-    });
-
-// REGISTER OUR ROUTES -------------------------------
-// all of our routes will be prefixed with /api
+//Load our routes and controllers
+var router = express.Router();
+require('./routes/global.js')(express, router)
+require('./routes/users.js')(express, app, router)
+require('./routes/videos.js')(express, app, router)
+require('./routes/events.js')(express, app, router)
 app.use('/api', router);
 
 var server = app.listen(port, function () {

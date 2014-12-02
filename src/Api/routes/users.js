@@ -1,9 +1,7 @@
-var express = require('express');
-var router = express.Router();
+module.exports = function (express, app, router) {
 
-/* GET users listing. */
-router.get('/', function(req, res) {
-  res.send('respond with a resource');
-});
-
-module.exports = router;
+	/* GET home page. */
+	router.get('/users', function(req, res) {
+	  res.json('index', { title: 'Express' });
+	});
+}
