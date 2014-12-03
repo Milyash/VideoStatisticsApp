@@ -35,9 +35,8 @@ mongoose.connect('mongodb://localhost:' + parameters.db_port);
 //Load our routes and controllers
 var router = express.Router();
 require('./routes/global.js')(express, router)
-require('./routes/users.js')(express, app, router)
-require('./routes/videos.js')(express, app, router)
-require('./routes/events.js')(express, app, router)
+require('./routes/plays.js')(express, app, router)
+require('./routes/pauses.js')(express, app, router)
 app.use('/api', router);
 
 var server = app.listen(port, function () {

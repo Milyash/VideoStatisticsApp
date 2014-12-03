@@ -38,7 +38,7 @@ $.each(iframe, function(i, video) {
 					data.to_volume = new_volume;
 					data.time = current_time;
 					data.video_id = id;
-					postData(data);
+					postData(dataToSend);
 					result.append("<li>"+ id +" muted! from " + current_volume + "to " + new_volume + "</li>");
 					current_volume = new_volume;
 				}
@@ -57,7 +57,10 @@ $.each(iframe, function(i, video) {
 			dataToSend.event = "play";
 			dataToSend.time = current_time;
 			dataToSend.video_id = id;
-			postData(dataToSend);
+			$.post("http://localhost:8080/api/plays", dataToSend, function( data ) {
+
+				console.log(data);
+			});
 			result.append("<li>"+ id +" -> play!, time = " + current_time + "sec </li>");
 		};
 
@@ -69,7 +72,10 @@ $.each(iframe, function(i, video) {
 			dataToSend.event = "pause";
 			dataToSend.time = current_time;
 			dataToSend.video_id = id;
-			postData(dataToSend);
+			$.post("http://localhost:8080/api/pauses", dataToSend, function( data ) {
+
+				console.log(data);
+			});
 			result.append("<li>"+ id +" -> pause!, time = " + current_time + "sec </li>");
 		};
 
@@ -85,7 +91,6 @@ $.each(iframe, function(i, video) {
 			postData(dataToSend);
 			result.append("<li>"+ id +" -> seeking! from " + current_time + " to " + data.seconds.toFixed(2) + "sec </li>");
 		};
-
 		
 	});
 });

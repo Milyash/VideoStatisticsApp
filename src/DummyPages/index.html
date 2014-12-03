@@ -11,33 +11,5 @@
 			<a href="vimeo/vimeo-ex.html">Vimeo player</a>
 			<a href="video.js/videojs-ex.html">Videojs player</a>
 		</div>
-		<div id="api">
-			<button>Post to Api</button>
-			<textarea rows="4" cols="50">
-				{"url": "Da Funk"}
-			</textarea>
-		</div>
-
-		<script> 
-			$('button').click(function() {
-
-				var dataToSend = $.parseJSON($('textarea').val());
-				$.post('http://localhost:8080/api/videos', dataToSend, function(data) {
-
-					console.log(data);
-				});
-				// $.ajax({
-				//   type: "POST",
-				//   url: 'http://localhost:8080/api/videos',
-				//   data: dataToSend,
-				//   success: function(data) {
-				//   	console.log(data);
-				//   },
-				//   headers: {
-			 //        "Origin":"http://localhost:80"
-			 //    }
-				// });
-			});
-		</script>
 	</body>
 </html>

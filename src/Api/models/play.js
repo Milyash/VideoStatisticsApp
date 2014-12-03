@@ -1,16 +1,13 @@
 var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend');
-var Schema = mongoose.Schema;
-
-var EventSchema = new Schema({
-  time : Number
-}, { collection : 'events', discriminatorKey : '_type' });
+    extend = require('mongoose-schema-extend'),
+    Schema = mongoose.Schema,
+    EventSchema = require('./event.js');
 
 var PlaySchema = EventSchema.extend({
-  play: String
+  page_url: String,
+  video_url: String,
+  video_id: String,
+  time: Number,
 });
-
-var Event = mongoose.model('Event', EventSchema),
-	Play = mongoose.model('Play', PlaySchema);
 
 module.exports = mongoose.model('Play', PlaySchema);
