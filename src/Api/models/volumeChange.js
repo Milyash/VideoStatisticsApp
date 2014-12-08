@@ -3,8 +3,9 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     EventSchema = require('./event.js');
 
-var PauseSchema = EventSchema.extend({
-
+var VolumeChangeSchema = EventSchema.extend({
+	from_volume : Number,
+	to_volume : Number,
 });
 
-module.exports = mongoose.model('Pause', PauseSchema);
+module.exports = mongoose.model('VolumeChange', VolumeChangeSchema);

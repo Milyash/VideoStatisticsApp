@@ -6,7 +6,7 @@ II Install MongoDb
 3. Create a package.json file : npm init
 4. Install the framework Express : npm install express --save
 5. Install the dependencies of Epxress:
-	the ORM Mongoose : npm install mongoose
+	the ORM Mongoose : npm install mongoose, npm install mongoose-schema-extend
 	body-parser (used to parse post request) : npm install body-parser
 	a file parser (used to load local config) : npm install fs
 6. Set your local variable in the file src/Api/config_local.json

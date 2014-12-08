@@ -37,6 +37,8 @@ var router = express.Router();
 require('./routes/global.js')(express, router)
 require('./routes/plays.js')(express, app, router)
 require('./routes/pauses.js')(express, app, router)
+require('./routes/seeks.js')(express, app, router)
+require('./routes/volumeChanges.js')(express, app, router)
 app.use('/api', router);
 
 var server = app.listen(port, function () {

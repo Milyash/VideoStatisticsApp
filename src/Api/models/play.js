@@ -4,10 +4,7 @@ var mongoose = require('mongoose'),
     EventSchema = require('./event.js');
 
 var PlaySchema = EventSchema.extend({
-  page_url: String,
-  video_url: String,
-  video_id: String,
-  time: Number,
+
 });
 
 module.exports = mongoose.model('Play', PlaySchema);

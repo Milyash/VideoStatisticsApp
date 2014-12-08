@@ -5,6 +5,7 @@ $("#clear").click(function(){
 var iframe = $('.video');
 $.each(iframe, function(i, video) {
 	var player = $f(video);
+	var urlBase = "http://localhost:8080";
 
 	player.addEvent('ready', function() {
 
@@ -38,7 +39,7 @@ $.each(iframe, function(i, video) {
 					data.to_volume = new_volume;
 					data.time = current_time;
 					data.video_id = id;
-					postData(dataToSend);
+					postData(data, urlBase+"/api/volumechanges");
 					result.append("<li>"+ id +" muted! from " + current_volume + "to " + new_volume + "</li>");
 					current_volume = new_volume;
 				}
@@ -57,10 +58,7 @@ $.each(iframe, function(i, video) {
 			dataToSend.event = "play";
 			dataToSend.time = current_time;
 			dataToSend.video_id = id;
-			$.post("http://localhost:8080/api/plays", dataToSend, function( data ) {
-
-				console.log(data);
-			});
+			postData(dataToSend, urlBase+"/api/plays");
 			result.append("<li>"+ id +" -> play!, time = " + current_time + "sec </li>");
 		};
 
@@ -72,10 +70,7 @@ $.each(iframe, function(i, video) {
 			dataToSend.event = "pause";
 			dataToSend.time = current_time;
 			dataToSend.video_id = id;
-			$.post("http://localhost:8080/api/pauses", dataToSend, function( data ) {
-
-				console.log(data);
-			});
+			postData(dataToSend, urlBase+"/api/pauses");
 			result.append("<li>"+ id +" -> pause!, time = " + current_time + "sec </li>");
 		};
 
@@ -88,16 +83,17 @@ $.each(iframe, function(i, video) {
 			dataToSend.time_from = current_time;
 			dataToSend.time_to = data.seconds;
 			dataToSend.video_id = id;
-			postData(dataToSend);
+			postData(dataToSend, urlBase+"/api/seeks");
 			result.append("<li>"+ id +" -> seeking! from " + current_time + " to " + data.seconds.toFixed(2) + "sec </li>");
 		};
 		
 	});
 });
 
-function postData(data) {
+function postData(dataToSend, route) {
 
-				$.post( "ajax/test.html", data, function( data ) {
+				$.post(route, dataToSend, function( data ) {
 
-				});
+				console.log(data);
+			});
 			}

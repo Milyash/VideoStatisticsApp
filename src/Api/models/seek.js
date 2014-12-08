@@ -3,8 +3,8 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     EventSchema = require('./event.js');
 
-var PauseSchema = EventSchema.extend({
-
+var SeekSchema = EventSchema.extend({
+	time_to : Number
 });
 
-module.exports = mongoose.model('Pause', PauseSchema);
+module.exports = mongoose.model('Seek', SeekSchema);
